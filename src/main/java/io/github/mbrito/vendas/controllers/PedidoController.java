@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.mbrito.vendas.dto.PedidoDTO;
+import io.github.mbrito.vendas.dto.input.PedidoDTO;
 import io.github.mbrito.vendas.entities.Pedido;
+import io.github.mbrito.vendas.exceptions.ListIsEmptyException;
 import io.github.mbrito.vendas.exceptions.ResourceNotFoundException;
 import io.github.mbrito.vendas.services.PedidoService;
 import jakarta.validation.Valid;
@@ -27,7 +28,7 @@ public class PedidoController {
 //	@RequestMapping(method = { RequestMethod.POST, RequestMethod.PUT })
 	
 	@PostMapping
-	public ResponseEntity<PedidoDTO> novoPedido(@RequestBody PedidoDTO pedido) throws Exception {
+	public ResponseEntity<PedidoDTO> novoPedido(@RequestBody PedidoDTO pedido) throws ListIsEmptyException, ResourceNotFoundException {
 		pedidoService.novoPedido(pedido);
 		return ResponseEntity.ok(pedido);
 	}

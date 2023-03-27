@@ -1,7 +1,7 @@
 package io.github.mbrito.vendas.exceptions;
 
 public class ResourceNotFoundException extends Exception {
-	
+		
 	private static final long serialVersionUID = 1L;
 	
 	private String resourceName;
@@ -16,7 +16,7 @@ public class ResourceNotFoundException extends Exception {
     }
 
     public ResourceNotFoundException(String resourceName) {
-        super(String.format("%s not found.", resourceName));
+        super(String.format("%s não encotrado.", resourceName));
         this.resourceName = resourceName;
     }
 

@@ -1,6 +1,6 @@
 package io.github.mbrito.vendas.entities;
 
-import java.util.Optional;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
+@JsonIgnoreProperties("pedido")
 public class ItemPedido {
 	
 	@Id
@@ -39,9 +40,9 @@ public class ItemPedido {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-//	public Pedido getPedido() {
-//		return pedido;
-//	}
+	public Pedido getPedido() {
+		return pedido;
+	}
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}

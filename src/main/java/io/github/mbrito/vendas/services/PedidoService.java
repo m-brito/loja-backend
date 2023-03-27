@@ -1,6 +1,7 @@
 package io.github.mbrito.vendas.services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,8 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import io.github.mbrito.vendas.dto.ItemPedidoDTO;
-import io.github.mbrito.vendas.dto.PedidoDTO;
+import io.github.mbrito.vendas.dto.input.ItemPedidoDTO;
+import io.github.mbrito.vendas.dto.input.PedidoDTO;
 import io.github.mbrito.vendas.entities.Cliente;
 import io.github.mbrito.vendas.entities.ItemPedido;
 import io.github.mbrito.vendas.entities.Pedido;
@@ -36,7 +37,7 @@ public class PedidoService {
 	private ProdutoRepository produtosRepository;
 
 	@Transactional
-	public Pedido novoPedido(PedidoDTO dto) throws Exception {
+	public Pedido novoPedido(PedidoDTO dto) throws ListIsEmptyException, ResourceNotFoundException {
 		Integer idCliente = dto.getCliente();
 		Cliente cliente = clienteRepository.findById(idCliente)
 				.orElseThrow(() -> new ResourceNotFoundException("Cliente", "Id", idCliente.toString()));
@@ -53,24 +54,25 @@ public class PedidoService {
 		return pedido;
 	}
 
-	private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> items) throws ListIsEmptyException {
+	private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> items) throws ListIsEmptyException, ResourceNotFoundException {
 		if (items.isEmpty()) {
 			throw new ListIsEmptyException("items");
 		}
-
-		return items.stream().map(dto -> {
-			Integer idProduto = dto.getProduto();
-			Optional<Produto> produto = produtosRepository.findById(idProduto);
-//			if(!produto.isPresent())
-//				throw new ResourceNotFoundException("Produto", "Id", idProduto.toString());
-
+		
+		List<ItemPedido> itemsPedido = new ArrayList<>();
+		
+		for(int x=0; x<items.size(); x++) {
+			Integer idProduto = items.get(x).getProduto();
+			Produto produto = produtosRepository.findById(idProduto)
+					.orElseThrow(() -> new ResourceNotFoundException("Produto"));
 			ItemPedido itemPedido = new ItemPedido();
-			itemPedido.setQuantidade(dto.getQuantidade());
+			itemPedido.setQuantidade(items.get(x).getQuantidade());
 			itemPedido.setPedido(pedido);
-			itemPedido.setProduto(produto.get());
-			return itemPedido;
-		}).collect(Collectors.toList());
-
+			itemPedido.setProduto(produto);
+			itemsPedido.add(itemPedido);
+		}
+		
+		return itemsPedido;
 	}
 
 	public Pedido editarPedido(Pedido pedido, Integer id) throws ResourceNotFoundException {
@@ -88,7 +90,6 @@ public class PedidoService {
 	}
 	
 	public Iterable<Pedido> obterPedidos() {
-		System.out.println(pedidoRepository.findAll());
 		return pedidoRepository.findAll();
 	}
 
@@ -107,9 +108,13 @@ public class PedidoService {
 		Pageable page = PageRequest.of(numeroPagina, qtdePagina);
 		return pedidoRepository.findAll(page);
 	}
-
+	
+	@Transactional
 	public void excluirPedido(int id) throws ResourceNotFoundException {
-		obterPedidoId(id);
+		Optional<Pedido> pedido = obterPedidoId(id);
+		pedido.get().getItensPedido().stream().forEach(i -> {
+			itemsPedidoRepository.deleteById(i.getId());
+		});
 		pedidoRepository.deleteById(id);
 	}
 }

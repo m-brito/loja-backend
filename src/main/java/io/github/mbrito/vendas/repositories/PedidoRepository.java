@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import io.github.mbrito.vendas.dto.PedidoDTO;
+import io.github.mbrito.vendas.dto.input.PedidoDTO;
 import io.github.mbrito.vendas.entities.Cliente;
 import io.github.mbrito.vendas.entities.Pedido;
 

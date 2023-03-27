@@ -2,6 +2,8 @@ package io.github.mbrito.vendas.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
+@JsonIgnoreProperties("pedidos")
 public class Cliente {
 	
 	@Id
@@ -46,8 +49,12 @@ public class Cliente {
 		this.nome = nome;
 	}
 
-//	public List<Pedido> getPedidos() {
-//		return pedidos;
-//	}
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
 	
 }

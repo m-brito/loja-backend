@@ -3,6 +3,8 @@ package io.github.mbrito.vendas.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
+import io.github.mbrito.vendas.dto.input.ItemPedidoDTO;
+
 public class InformacoesPedidoDTO {
 	private Integer id;
     private String nomeCliente;
