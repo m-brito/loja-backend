@@ -1,8 +1,10 @@
 package io.github.mbrito.vendas.casoDeUso.produto.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -35,29 +37,27 @@ public class ProdutoController {
 //	}
 	
 	@PostMapping
-	public @ResponseBody Produto novoProduto(@Valid Produto produto) {
-		produtoService.novoProduto(produto);
-		return produto;
+	public ResponseEntity<Produto> novoProduto(@Valid Produto produto) {
+		return produtoService.novoProduto(produto);
 	}
 	
 	@PatchMapping("/{id}")
-	public @ResponseBody Produto editarProduto(@Valid Produto produto, @PathVariable int id) throws ResourceNotFoundException {
-		Produto novoProduto = produtoService.editarProdutoParcial(produto, id);
-		return novoProduto;
+	public ResponseEntity<Produto> editarProduto(@Valid Produto produto, @PathVariable int id) throws ResourceNotFoundException {
+		return produtoService.editarProdutoParcial(produto, id);
 	}
 	
 	@GetMapping
-	public Iterable<Produto> obterProdutos() {
+	public ResponseEntity<List<Produto>> obterProdutos() {
 		return produtoService.obterProdutos();
 	}
 	
 	@GetMapping("/{id}")
-	public Optional<Produto> obterProdutosId(@PathVariable Integer id) throws ResourceNotFoundException {
+	public ResponseEntity<Produto> obterProdutosId(@PathVariable Integer id) throws ResourceNotFoundException {
 		return produtoService.obterProdutosId(id);
 	}
 	
 	@GetMapping(path = "/pagina/{numeroPagina}/{qtdePagina}")
-	public Iterable<Produto> obterProdutosPorPagina(@PathVariable int numeroPagina, @PathVariable int qtdePagina) {
+	public ResponseEntity<Iterable<Produto>> obterProdutosPorPagina(@PathVariable int numeroPagina, @PathVariable int qtdePagina) {
 		return produtoService.obterProdutosPorPagina(numeroPagina, qtdePagina);
 	}
 	

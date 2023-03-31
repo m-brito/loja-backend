@@ -9,7 +9,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Produto {
@@ -20,6 +23,9 @@ public class Produto {
 	
 	@NotBlank(message = "{descricao.not.blank}")
 	private String descricao;
+	
+	@NotNull
+	@Min(0)
 	private BigDecimal preco;
 	
 	@OneToMany(mappedBy = "produto")

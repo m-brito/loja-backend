@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import io.github.mbrito.vendas.casoDeUso.cliente.entitie.Cliente;
@@ -37,7 +39,7 @@ public class PedidoService {
 	private ProdutoRepository produtosRepository;
 
 	@Transactional
-	public Pedido novoPedido(RequestPedidoDTO dto) throws ListIsEmptyException, ResourceNotFoundException {
+	public ResponseEntity<Pedido> novoPedido(RequestPedidoDTO dto) throws ListIsEmptyException, ResourceNotFoundException {
 		Integer idCliente = dto.getCliente();
 		Cliente cliente = clienteRepository.findById(idCliente)
 				.orElseThrow(() -> new ResourceNotFoundException("Cliente", "Id", idCliente.toString()));
@@ -51,7 +53,7 @@ public class PedidoService {
 		pedidoRepository.save(pedido);
 		itemsPedidoRepository.saveAll(itemsPedido);
 		pedido.setItensPedido(itemsPedido);
-		return pedido;
+		return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
 	}
 
 	private List<ItemPedido> converterItems(Pedido pedido, List<RequestItemPedidoDTO> items) throws ListIsEmptyException, ResourceNotFoundException {
@@ -75,54 +77,55 @@ public class PedidoService {
 		return itemsPedido;
 	}
 
-	public Pedido editarPedido(Pedido pedido, Integer id) throws ResourceNotFoundException {
+	public ResponseEntity<Pedido> editarPedido(Pedido pedido, Integer id) throws ResourceNotFoundException {
 		obterPedidoId(id);
 		pedidoRepository.save(pedido);
-		return pedido;
+		return ResponseEntity.status(HttpStatus.OK).body(pedido);
 	}
 
-	public Pedido editarPedidoParcial(Pedido novoPedido, Integer id) throws ResourceNotFoundException {
-		Optional<Pedido> oldPedido = obterPedidoId(id);
-		Pedido p = oldPedido.get();
+	public ResponseEntity<Pedido> editarPedidoParcial(Pedido novoPedido, Integer id) throws ResourceNotFoundException {
+		ResponseEntity<Pedido> oldPedido = obterPedidoId(id);
+		Pedido p = oldPedido.getBody();
 		p.setDataPedido(novoPedido.getDataPedido() != null ? novoPedido.getDataPedido() : p.getDataPedido());
 		pedidoRepository.save(p);
-		return p;
+		return ResponseEntity.status(HttpStatus.OK).body(p);
 	}
 	
-	public Iterable<Pedido> obterPedidos() {
-		return pedidoRepository.findAll();
+	public ResponseEntity<List<Pedido>> obterPedidos() {
+		return ResponseEntity.status(HttpStatus.OK).body(pedidoRepository.findAll());
 	}
 
-	public Optional<Pedido> obterPedidoId(Integer id) throws ResourceNotFoundException {
-		Optional<Pedido> Pedido = pedidoRepository.findById(id);
-		if (Pedido.isPresent()) {
-			return Pedido;
+	public ResponseEntity<Pedido> obterPedidoId(Integer id) throws ResourceNotFoundException {
+		Optional<Pedido> pedido = pedidoRepository.findById(id);
+		if (pedido.isPresent()) {
+			return ResponseEntity.status(HttpStatus.OK).body(pedido.get());
 		} else {
 			throw new ResourceNotFoundException("Pedido", "Id", id.toString());
 		}
 	}
 	
-	public Iterable<Pedido> obterPedidoCliente(Integer idCliente) throws ResourceNotFoundException {
+	public ResponseEntity<List<Pedido>> obterPedidoCliente(Integer idCliente) throws ResourceNotFoundException {
 		Optional<Cliente> cliente = clienteRepository.findById(idCliente);
 		if(!cliente.isPresent())
 			throw new ResourceNotFoundException("Cliente", "Id", idCliente.toString());
-		Iterable<Pedido> pedidos = pedidoRepository.findByCliente(cliente);
-		return pedidos;
+		List<Pedido> pedidos = pedidoRepository.findByCliente(cliente);
+		return ResponseEntity.status(HttpStatus.OK).body(pedidos);
 	}
 
-	public Iterable<Pedido> obterPedidosPorPagina(int numeroPagina, int qtdePagina) {
+	public ResponseEntity<Iterable<Pedido>> obterPedidosPorPagina(int numeroPagina, int qtdePagina) {
 		if (qtdePagina >= 5)
 			qtdePagina = 5;
 		Pageable page = PageRequest.of(numeroPagina, qtdePagina);
-		return pedidoRepository.findAll(page);
+		return ResponseEntity.status(HttpStatus.OK).body(pedidoRepository.findAll(page));
 	}
 	
 	@Transactional
-	public void excluirPedido(int id) throws ResourceNotFoundException {
-		Optional<Pedido> pedido = obterPedidoId(id);
-		pedido.get().getItensPedido().stream().forEach(i -> {
+	public ResponseEntity<Void> excluirPedido(int id) throws ResourceNotFoundException {
+		ResponseEntity<Pedido> pedido = obterPedidoId(id);
+		pedido.getBody().getItensPedido().stream().forEach(i -> {
 			itemsPedidoRepository.deleteById(i.getId());
 		});
 		pedidoRepository.deleteById(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 	}
 }

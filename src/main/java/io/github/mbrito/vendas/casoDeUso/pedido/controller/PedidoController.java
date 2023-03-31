@@ -1,5 +1,7 @@
 package io.github.mbrito.vendas.casoDeUso.pedido.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,39 +30,37 @@ public class PedidoController {
 //	@RequestMapping(method = { RequestMethod.POST, RequestMethod.PUT })
 	
 	@PostMapping
-	public ResponseEntity<RequestPedidoDTO> novoPedido(@RequestBody RequestPedidoDTO pedido) throws ListIsEmptyException, ResourceNotFoundException {
-		pedidoService.novoPedido(pedido);
-		return ResponseEntity.ok(pedido);
+	public ResponseEntity<Pedido> novoPedido(@RequestBody RequestPedidoDTO pedido) throws ListIsEmptyException, ResourceNotFoundException {
+		return pedidoService.novoPedido(pedido);
 	}
 	
 	@PatchMapping("/{id}")
 	public ResponseEntity<Pedido> editarPedido(@Valid Pedido pedido, @PathVariable int id) throws ResourceNotFoundException {		
-		Pedido novoPedido = pedidoService.editarPedidoParcial(pedido, id);
-		return ResponseEntity.ok(novoPedido);
+		return pedidoService.editarPedidoParcial(pedido, id);
 	}
 
 	@GetMapping
-	public Iterable<Pedido> Pedidos() {
+	public ResponseEntity<List<Pedido>> Pedidos() {
 		return pedidoService.obterPedidos();
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> PedidoId(@PathVariable int id) throws ResourceNotFoundException {
-		return ResponseEntity.ok(pedidoService.obterPedidoId(id));
+	public ResponseEntity<Pedido> PedidoId(@PathVariable int id) throws ResourceNotFoundException {
+		return pedidoService.obterPedidoId(id);
 	}
 	
 	@GetMapping("/cliente/{idCliente}")
-	public ResponseEntity<?> PedidoIdCliente(@PathVariable int idCliente) throws ResourceNotFoundException {
-		return ResponseEntity.ok(pedidoService.obterPedidoCliente(idCliente));
+	public ResponseEntity<List<Pedido>> PedidoIdCliente(@PathVariable int idCliente) throws ResourceNotFoundException {
+		return pedidoService.obterPedidoCliente(idCliente);
 	}
 
 	@GetMapping(path = "/pagina/{numeroPagina}/{qtdePagina}")
-	public Iterable<Pedido> PedidoPagina(@PathVariable int numeroPagina, @PathVariable int qtdePagina) {
+	public ResponseEntity<Iterable<Pedido>> PedidoPagina(@PathVariable int numeroPagina, @PathVariable int qtdePagina) {
 		return pedidoService.obterPedidosPorPagina(numeroPagina, qtdePagina);
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public void excluirPedido(@PathVariable int id) throws ResourceNotFoundException {
-		pedidoService.excluirPedido(id);
+	public ResponseEntity<Void> excluirPedido(@PathVariable int id) throws ResourceNotFoundException {
+		return pedidoService.excluirPedido(id);
 	}
 }
