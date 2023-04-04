@@ -1,7 +1,13 @@
 package io.github.mbrito.vendas.casoDeUso.pedido.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class RequestItemPedidoDTO {
+	
+	@NotNull(message = "{produto.not.null}")
 	private Integer produto;
+	
+	@NotNull(message = "{quantidade.not.null}")
 	private Integer quantidade;
 	
 	public RequestItemPedidoDTO() {}

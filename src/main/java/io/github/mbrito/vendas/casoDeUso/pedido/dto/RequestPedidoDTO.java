@@ -3,9 +3,17 @@ package io.github.mbrito.vendas.casoDeUso.pedido.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
+import io.github.mbrito.vendas.validation.NotEmptyList;
+import jakarta.validation.constraints.NotNull;
+
 public class RequestPedidoDTO {
+	@NotNull(message = "{cliente.not.null}")
 	private Integer cliente;
+	
+	@NotNull(message = "{total.not.null}")
 	private BigDecimal total;
+	
+	@NotEmptyList(message = "{itens.not.empty.list}")
 	private List<RequestItemPedidoDTO> items;	
 	
 	public RequestPedidoDTO() {}

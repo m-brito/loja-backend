@@ -43,6 +43,11 @@ public class ClienteController {
 	public ResponseEntity<List<Cliente>> clientes() {
 		return clienteService.obterClientes();
 	}
+	
+	@GetMapping(path = "/filtro")
+	public ResponseEntity<List<Cliente>> clientesFiltro(@RequestBody(required = false) Cliente c) {
+		return clienteService.obterClientesFiltro(c);
+	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Cliente> clienteId(@RequestBody @PathVariable int id) throws ResourceNotFoundException {

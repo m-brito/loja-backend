@@ -29,7 +29,7 @@ public class ApiException {
     }
 
     public ApiException(Integer status, Exception exception, HttpServletRequest request, List<String> messages) {
-        this(status, exception, request, String.join(" ", messages));
+        this(status, exception, request, String.join(", ", messages));
     }
 
     public LocalDateTime getTimestamp() {

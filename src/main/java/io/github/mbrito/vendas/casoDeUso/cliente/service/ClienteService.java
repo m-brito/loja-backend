@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +43,7 @@ public class ClienteService {
 		ResponseEntity<Cliente> oldCliente = obterClienteId(id);
 		Cliente c = oldCliente.getBody();
 		c.setNome(novoCliente.getNome() != null ? novoCliente.getNome() : c.getNome());
+		c.setCpf(novoCliente.getCpf() != null ? novoCliente.getCpf() : c.getCpf());
 		clienteRepository.save(c);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 		return ResponseEntity.status(HttpStatus.OK).location(uri).body(c);
@@ -47,6 +51,14 @@ public class ClienteService {
 	
 	public ResponseEntity<List<Cliente>> obterClientes() {
 		List<Cliente> clientes = clienteRepository.findAll();
+		return ResponseEntity.status(HttpStatus.OK).body(clientes);
+	}
+	
+	public ResponseEntity<List<Cliente>> obterClientesFiltro(Cliente filtro) {
+		if(filtro == null) filtro = new Cliente();
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
+		Example<Cliente> example = Example.of(filtro, matcher);
+		List<Cliente> clientes = clienteRepository.findAll(example);
 		return ResponseEntity.status(HttpStatus.OK).body(clientes);
 	}
 	

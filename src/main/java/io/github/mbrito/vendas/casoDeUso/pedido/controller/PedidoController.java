@@ -30,11 +30,11 @@ public class PedidoController {
 //	@RequestMapping(method = { RequestMethod.POST, RequestMethod.PUT })
 	
 	@PostMapping
-	public ResponseEntity<Pedido> novoPedido(@RequestBody RequestPedidoDTO pedido) throws ListIsEmptyException, ResourceNotFoundException {
+	public ResponseEntity<Pedido> novoPedido(@RequestBody @Valid RequestPedidoDTO pedido) throws ListIsEmptyException, ResourceNotFoundException {
 		return pedidoService.novoPedido(pedido);
 	}
 	
-	@PatchMapping("/{id}")
+	@PatchMapping(path = "/{id}")
 	public ResponseEntity<Pedido> editarPedido(@Valid Pedido pedido, @PathVariable int id) throws ResourceNotFoundException {		
 		return pedidoService.editarPedidoParcial(pedido, id);
 	}
@@ -44,12 +44,12 @@ public class PedidoController {
 		return pedidoService.obterPedidos();
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping(path = "/{id}")
 	public ResponseEntity<Pedido> PedidoId(@PathVariable int id) throws ResourceNotFoundException {
 		return pedidoService.obterPedidoId(id);
 	}
 	
-	@GetMapping("/cliente/{idCliente}")
+	@GetMapping(path = "/cliente/{idCliente}")
 	public ResponseEntity<List<Pedido>> PedidoIdCliente(@PathVariable int idCliente) throws ResourceNotFoundException {
 		return pedidoService.obterPedidoCliente(idCliente);
 	}
