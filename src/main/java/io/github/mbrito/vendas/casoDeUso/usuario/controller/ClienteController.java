@@ -1,4 +1,4 @@
-package io.github.mbrito.vendas.casoDeUso.cliente.controller;
+package io.github.mbrito.vendas.casoDeUso.usuario.controller;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.mbrito.vendas.casoDeUso.cliente.entitie.Cliente;
-import io.github.mbrito.vendas.casoDeUso.cliente.service.ClienteService;
+import io.github.mbrito.vendas.casoDeUso.usuario.entitie.Cliente;
+import io.github.mbrito.vendas.casoDeUso.usuario.service.ClienteService;
 import io.github.mbrito.vendas.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
 

@@ -1,4 +1,4 @@
-package io.github.mbrito.vendas.casoDeUso.cliente.dto;
+package io.github.mbrito.vendas.casoDeUso.usuario.dto;
 
 public class RequestClienteDTO {
 	private Integer id;

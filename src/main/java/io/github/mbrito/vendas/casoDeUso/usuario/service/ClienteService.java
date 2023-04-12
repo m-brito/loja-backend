@@ -1,4 +1,4 @@
-package io.github.mbrito.vendas.casoDeUso.cliente.service;
+package io.github.mbrito.vendas.casoDeUso.usuario.service;
 
 import java.net.URI;
 import java.util.List;
@@ -16,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import io.github.mbrito.vendas.casoDeUso.cliente.entitie.Cliente;
-import io.github.mbrito.vendas.casoDeUso.cliente.repository.ClienteRepository;
+import io.github.mbrito.vendas.casoDeUso.usuario.entitie.Cliente;
+import io.github.mbrito.vendas.casoDeUso.usuario.repository.ClienteRepository;
 import io.github.mbrito.vendas.exceptions.ResourceNotFoundException;
 
 @Service

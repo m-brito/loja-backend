@@ -1,4 +1,4 @@
-package io.github.mbrito.vendas.casoDeUso.cliente.entitie;
+package io.github.mbrito.vendas.casoDeUso.usuario.entitie;
 
 import java.util.List;
 

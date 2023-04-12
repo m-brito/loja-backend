@@ -1,4 +1,4 @@
-package io.github.mbrito.vendas.casoDeUso.cliente.repository;
+package io.github.mbrito.vendas.casoDeUso.usuario.repository;
 
 import java.util.Optional;
 
@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import io.github.mbrito.vendas.casoDeUso.cliente.entitie.Cliente;
+import io.github.mbrito.vendas.casoDeUso.usuario.entitie.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 	@Query("SELECT c FROM Cliente c WHERE c.nome LIKE %:parteNome%")
