@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import io.github.mbrito.vendas.casoDeUso.cliente.entitie.Cliente;
+import io.github.mbrito.vendas.casoDeUso.usuario.entitie.Cliente;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

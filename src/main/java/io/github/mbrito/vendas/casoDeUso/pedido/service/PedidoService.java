@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import io.github.mbrito.vendas.casoDeUso.cliente.entitie.Cliente;
-import io.github.mbrito.vendas.casoDeUso.cliente.repository.ClienteRepository;
 import io.github.mbrito.vendas.casoDeUso.pedido.dto.RequestItemPedidoDTO;
 import io.github.mbrito.vendas.casoDeUso.pedido.dto.RequestPedidoDTO;
 import io.github.mbrito.vendas.casoDeUso.pedido.entitie.ItemPedido;
@@ -23,6 +21,8 @@ import io.github.mbrito.vendas.casoDeUso.pedido.repository.ItemPedidoRepository;
 import io.github.mbrito.vendas.casoDeUso.pedido.repository.PedidoRepository;
 import io.github.mbrito.vendas.casoDeUso.produto.entitie.Produto;
 import io.github.mbrito.vendas.casoDeUso.produto.repository.ProdutoRepository;
+import io.github.mbrito.vendas.casoDeUso.usuario.entitie.Cliente;
+import io.github.mbrito.vendas.casoDeUso.usuario.repository.ClienteRepository;
 import io.github.mbrito.vendas.exceptions.ListIsEmptyException;
 import io.github.mbrito.vendas.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
