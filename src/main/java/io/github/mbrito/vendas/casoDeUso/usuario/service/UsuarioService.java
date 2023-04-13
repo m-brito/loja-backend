@@ -38,7 +38,7 @@ public class UsuarioService implements UserDetailsService {
 
         throw new SenhaInvalidaException();
     }
-
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = repository.findByLogin(username)
